@@ -1,0 +1,6 @@
+<launch>
+	<node pkg="rosbag" type="record" output="screen" name="rosbag"
+		args=" -o /media/nvidia/SSD/passive-mapping/ --duration=180 zed/depth/camera_info 
+			zed/odom zed/point_cloud/cloud_registered zed/depth/depth_registered zed/rgb/image_rect_color /tf /tf_static /map"
+	/>
+</launch>
