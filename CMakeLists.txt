@@ -13,6 +13,9 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   tf
+  tf2_ros
+  nav_msgs
+  
 )
 
 ## System dependencies are found with CMake's conventions
@@ -136,7 +139,8 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/passive_mapping_node.cpp)
-
+add_executable(quad_odom_transform src/quad_odom_transform.cpp)
+target_link_libraries(quad_odom_transform ${catkin_LIBRARIES})
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use

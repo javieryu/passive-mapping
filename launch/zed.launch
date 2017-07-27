@@ -1,8 +1,7 @@
 <launch>
-	
 	<arg name="svo_file" default=""/>
 	<arg name="zed_id" default="0"/>
-	
+
 	<group ns="zed">
 		<node name="zed_wrapper_node" pkg="zed_wrapper" type="zed_wrapper_node" output="screen">
 
@@ -14,8 +13,8 @@
 
 			<param name="resolution"            value="3" />
 			<param name="quality"               value="3" />
-			<param name="sensing_mode"          value="0" />
-			<param name="frame_rate"            value="20" />
+			<param name="sensing_mode"          value="1" />
+			<param name="frame_rate"            value="30" />
 			<param name="odometry_db"           value="" />
 			<param name="openni_depth_mode"     value="1" />
 			<param name="gpu_id"                value="-1" />
@@ -42,6 +41,7 @@
 			<param name="odometry_topic"        value="odom" />
 
 		</node>
+
 		<!-- ROS URDF description of the ZED -->	
 		<param name="zed_description" textfile="$(find zed_wrapper)/urdf/zed.urdf" />
 		
@@ -50,13 +50,4 @@
 		</node>
 	</group>
 
-	<include file="$(find zed_wrapper)/launch/zed_tf.launch" />
-	
-	<include file="$(find dji_sdk)/launch/sdk_manifold.launch" />
-
-	<node pkg="rosbag" type="record" output="screen" name="rosbag"
-		args=" -o /media/nvidia/SSD/passive-mapping/ --duration=480 zed/depth/camera_info 
-			zed/odom zed/depth/depth_registered zed/point_cloud/cloud_registered
-			zed/rgb/image_rect_color /tf /tf_static /map /dji_sdk/odometry"
-	/>
 </launch>

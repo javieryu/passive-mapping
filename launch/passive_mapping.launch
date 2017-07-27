@@ -1,24 +1,13 @@
 <launch>
-	<arg name="svo_file" default=""/>
-	<arg name="zed_id" default="0"/>
-	<group ns="zed">
-		<include file="$(find zed_wrapper)/launch/zed_camera.launch">
-			<arg name="svo_file" value="$(arg svo_file)" />
-			<arg name="zed_id" value="$(arg zed_id)" />
-		</include>
-	</group>
-
-	<node pkg="octomap_server" type="octomap_server_node" name="octomap_server">
-		<param name="resolution" value="0.05" />
-		
-		<!-- fixed map frame (set to 'map' if SLAM or localization running!) -->
-		<param name="frame_id" type="string" value="/map" />
-		
-		<!-- maximum range to integrate (speedup!) -->
-		<param name="sensor_model/max_range" value="7.0" />
-		
-		<!-- data source to integrate (PointCloud2) -->
-		<remap from="cloud_in" to="/zed/point_cloud/cloud_registered" />
 	
-	</node>
+	<include file="$(find passive_mapping)/launch/zed.launch" />
+	
+	<include file="$(find passive_mapping)/launch/rtabmap_mapping.launch" /> 
+	
+	<include file="$(find dji_sdk)/launch/sdk_manifold.launch" />
+	
+	<node name="quad_odom_transform" pkg="passive_mapping" type="quad_odom_transform" output="screen" />
+	
+	<include file="$(find passive_mapping)/launch/transforms.launch" />
+	
 </launch>
