@@ -7,8 +7,8 @@
 	
 	<node name="quad_odom_transform" pkg="passive_mapping" type="quad_odom_transform" output="screen" />
 		
-	<arg name="test_num" value="4" />
-	<arg name="bag_path" value="/media/nvidia/SSD/passive-mapping/test_$(arg test_num)_modified.bag" />
+	<arg name="test_num" value="5" />
+	<arg name="bag_path" value="/media/nvidia/SSD/passive-mapping/test_$(arg test_num).bag" />
 	<arg name="bag_args" value="--clock" />
 	
 	<node pkg="rosbag" type="play" name="player" output="screen" 
@@ -29,7 +29,7 @@
 			<remap from="depth/image" to="/zed/depth/depth_registered"/>
 			<remap from="rgb/camera_info" to="/zed/depth/camera_info"/>
 
-			<param name="queue_size" type="int" value="10"/>
+			<param name="queue_size" type="int" value="30"/>
 
 			<!-- RTAB-Map's parameters -->
 			
@@ -45,14 +45,18 @@
 			<param name="Rtabmap/DetectionRate" type="string" value="2" />
 			<param name="Mem/RehearsalSimilarity" type="string" value="0.45"/>
 
+			<param name="Grid/3D" type="string" value="false" />
+			
 			<param name="Grid/DepthMax" type="string" value="15.0" />
-			<param name="Grid/CellSize" type="string" value="0.15" />
+			<param name="Grid/CellSize" type="string" value="0.2" />
 
-			<param name="GridGlobal/Eroded" type="string" value="false" />
+			<param name="GridGlobal/Eroded" type="string" value="true" />
 			<param name="Grid/GroundIsObstacle" type="string" value="true" />
 			<param name="Grid/NormalSegmentation" type="string" value="true" />
+			<param name="Grid/MaxGroundAngle" type="string" value="45" />
+			
 
-			<param name="Grid/NoiseFilteringRadius" type="string" value="0.15"/>
+			<param name="Grid/NoiseFilteringRadius" type="string" value="0.175"/>
 			<param name="Grid/NoiseFilteringMinNeighbors" type="string" value="4"/>
 			<param name="GridGlobal/FullUpdate" type="string" value="true" />
 			
@@ -60,12 +64,12 @@
 			<param name="Grid/FootprintLength" type="string" value="1.0" />
 			<param name="Grid/FootprintWidth" type="string" value="1.0" />
 			
+			<param name="Kp/WordsPerImage" type="string" value="-1"/>
+			
 			<!-- For scan mapping -->
-			<param if="$(arg laser_scan)" name="Vis/MinInliers"            type="string" value="5"/>
-			<param if="$(arg laser_scan)" name="Vis/InlierDistance"        type="string" value="0.05"/>
-			<param if="$(arg laser_scan)" name="Reg/Strategy"              type="string" value="1"/>
-			<param if="$(arg laser_scan)" name="subscribe_scan" type="bool" value="false"/>
-			<remap if="$(arg laser_scan)" from="scan" to="/zed/point_cloud/cloud_registered"/>
+			
+			<param if="$(arg laser_scan)" name="subscribe_scan_cloud" type="bool" value="true"/>
+			<remap if="$(arg laser_scan)" from="scan_cloud" to="/zed/point_cloud/cloud_registered"/>
 
 
 		</node>
